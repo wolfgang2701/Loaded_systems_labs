@@ -1,0 +1,5 @@
+version: '1'
+
+services:
+  task1:
+    image: hello-world:latest

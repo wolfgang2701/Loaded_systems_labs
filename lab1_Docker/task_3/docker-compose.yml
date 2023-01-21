@@ -1,0 +1,11 @@
+version: '1'
+
+services:
+    task_3:
+        image: node:latest
+        working_dir: /json_server
+        volumes:
+        - ./:/json_server
+        ports: 
+        - 3000:3000
+        command: bash script_pipe.sh

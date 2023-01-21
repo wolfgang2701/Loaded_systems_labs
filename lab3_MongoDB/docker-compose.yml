@@ -1,0 +1,128 @@
+version: '3'
+services:
+
+  ## Router
+  router1:
+    image: mongo:4.0
+    container_name: router-1
+    command: mongos --port 27017 --configdb rs-config-server/configsvr1:27017,configsvr2:27017,configsvr3:27017 --bind_ip_all
+    volumes:
+      - ./scripts:/scripts
+      - ./data:/data
+    ports:
+      - 27117:27017
+  router2:
+    image: mongo:4.0
+    container_name: router-2
+    command: mongos --port 27017 --configdb rs-config-server/configsvr1:27017,configsvr2:27017,configsvr3:27017 --bind_ip_all
+    volumes:
+      - ./scripts:/scripts
+      - ./data:/data
+    ports:
+      - 27118:27017
+
+  ## Config Servers
+  configsvr1:
+    image: mongo:4.0
+    container_name: mongo-config-1
+    command: mongod --port 27017 --configsvr --replSet rs-config-server
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27119:27017
+  configsvr2:
+    image: mongo:4.0
+    container_name: mongo-config-2
+    command: mongod --port 27017 --configsvr --replSet rs-config-server
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27120:27017
+  configsvr3:
+    image: mongo:4.0
+    container_name: mongo-config-3
+    command: mongod --port 27017 --configsvr --replSet rs-config-server
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27121:27017
+
+  ## Shards
+  ## Shards 01
+
+  shard1-a:
+    image: mongo:4.0
+    container_name: shard-1-node-a
+    command: mongod --port 27017 --shardsvr --replSet rs-shard-1
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27122:27017
+  shard1-b:
+    image: mongo:4.0
+    container_name: shard-1-node-b
+    command: mongod --port 27017 --shardsvr --replSet rs-shard-1
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27123:27017
+  shard1-c:
+    image: mongo:4.0
+    container_name: shard-1-node-c
+    command: mongod --port 27017 --shardsvr --replSet rs-shard-1
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27124:27017
+
+  ## Shards 02
+  shard2-a:
+    image: mongo:4.0
+    container_name: shard-2-node-a
+    command: mongod --port 27017 --shardsvr --replSet rs-shard-2
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27125:27017
+  shard2-b:
+    image: mongo:4.0
+    container_name: shard-2-node-b
+    command: mongod --port 27017 --shardsvr --replSet rs-shard-2
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27126:27017
+  shard2-c:
+    image: mongo:4.0
+    container_name: shard-2-node-c
+    command: mongod --port 27017 --shardsvr --replSet rs-shard-2
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27127:27017
+
+  ## Shards 03
+  shard3-a:
+    image: mongo:4.0
+    container_name: shard-3-node-a
+    command: mongod --port 27017 --shardsvr --replSet rs-shard-3
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27128:27017
+  shard3-b:
+    image: mongo:4.0
+    container_name: shard-3-node-b
+    command: mongod --port 27017 --shardsvr --replSet rs-shard-3
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27129:27017
+  shard3-c:
+    image: mongo:4.0
+    container_name: shard-3-node-c
+    command: mongod --port 27017 --shardsvr --replSet rs-shard-3
+    volumes:
+      - ./scripts:/scripts
+    ports:
+      - 27130:27017

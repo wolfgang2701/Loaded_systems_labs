@@ -1,0 +1,34 @@
+http://localhost:8080/json_server/posts
+
+[
+    {
+        "id": 1,
+        "title": "First lab",
+        "author": "deriugin"
+    }
+]
+
+http://localhost:8080/json_server/comments
+
+[
+    {
+        "id": 1,
+        "body": "Commenting post",
+        "postId": 1
+    }
+]
+
+http://localhost:8080/json_server/profile
+
+{
+    "name": "deriugin"
+}
+
+http://localhost:8080
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <h1 class="heading">Hello world!</h1>
+</body>
