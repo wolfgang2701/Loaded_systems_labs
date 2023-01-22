@@ -140,9 +140,83 @@ Running containers
         
         ![](/images//lab4-5.png)
 
+- Step 5 - Starting Docker container with Hadoop
+
+    ![](/images/lab4-6.png)
+
+- Step 6 - `docker exec -it namenode bash`
+
+- Step  7 - `hadoop fs -mkdir -p input_dir` -> `hadoop fs -ls`
+
+    ![](/images/lab4-7.png)
+
+- Step 8 - Add sample.txt file to input_dir
+
+    - `docker cp D:/IASA_loaded_systems/lab4_Hadoop/sample.txt 940ecf081367:sample.txt`
+    - `hadoop fs -put sample.txt input_dir`
+
+        ![](/images/lab4-8.png)
+
+- Step 9 - Add units.jar and ProcessUnits.java to docker container
+
+    - `docker cp D:/IASA_loaded_systems/lab4_Hadoop/units.jar 940ecf081367:units.jar`
+    - `docker cp D:/IASA_loaded_systems/lab4_Hadoop/ProcessUnits.java 940ecf081367:ProcessUnits.java`
+
+- Step 10 (Accident). Because of ProcessUnits.java was compiled using JDK-19, there is troubles with compiling it inside docker container. That's why we gonna do following: 
+
+    - `mkdir junits`
+
+    - `cd junits`
+
+    - `cp ../ProcessUnits.java ./ProcessUnits.java`
+
+    - `javac ProcessUnits.java -cp $(hadoop classpath) -target 1.8`
+
+    - `jar cvf junits.jar *`
+
+    - `cd ..`
+
+    - `cp ./junits/junits.jar .junits.jar`
+
+- Step 11 - `hadoop jar junits.jar ProcessUnits input_dir output_dir`
+
+    ![](/images/lab4-9.png)
+
+    ![](/images/lab4-10.png)
+
+- Step 12 - `hadoop fs -ls output_dir`
+
+    ![](/images/lab4-11.png)
+
+- Step 13 
+
+    - `hadoop fs -cat output_dir/part-00000 > result.txt`
+    - `docker cp 3e10b17f4ef4:result.txt D:/IASA_loaded_systems/lab4_Hadoop/data/result.txt`
+
+    ![](/images/lab4-12.png)
+
+- Step 14 - `docker-compose down`
 
 ## Lab 5 - Spark
 
-- Installing spark using the tutorial from https://phoenixnap.com/kb/install-spark-on-windows-10
+**We decided to use Google Collab to do this lab, because the computing requires a lot of computing power and our computers are not powerful enough**
+    
+- Generate taxi traffic data using `faker_generate_traffic.ipynb` 
+
+    Result is located in /lab5_Spark/data/rides.csv (we have no opportunity to load this to GitHub)
+
+- Get statistic data using Pyspark. Code is located in `pyshark_map_reduce.ipynb`
+
+    As the result we have this files in the `lab5_Spark/data` folder: 
+
+    - `densest_traffic_by_hour.json` - Contains the most densest traffic timezone and amount of rides. 
+    - `top_10_longest_text_comments.json` - Contains 10 longest text comments
+    - `top_50_clients.json` - Contains 50 the most well-rated clients
+    - `top_100_drivers.json` - Contains 100 the most well-rated drivers
+    - `top_complaint_driver_category.json` - Contains the most frequent complaint category in driver rate category
+    - `top_night_riders.json` - Contains 50 drivers, who did nights rides more than others
+    - `top_praised_driver_category.json` - Contains the most frequent praise category in driver rate category
+    - `worst_drivers.json` - Contains 100 the most worst-rated drivers
+
 
 
